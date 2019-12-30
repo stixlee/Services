@@ -5,6 +5,7 @@
 //  Created by Michael Lee on 12/30/19.
 //
 
+import Core
 
 public struct User {
   public var username: String
