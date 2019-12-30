@@ -9,10 +9,11 @@ extension Api {
 
   open func login(username: String,
                   password: String,
+                  file: FileDescriptor,
                   success: @escaping ((_ user: User?) -> Void),
                   failure: @escaping OperationFailure) {
 
-    loadUsers(
+    loadUsers(from: file,
       succces: { users in
         for user in users {
           if user.isMatch(for: username, password: password) {
@@ -25,9 +26,9 @@ extension Api {
       failure: failure)
   }
 
-  func loadUsers(succces: @escaping OperationSuccess<[User]>,
+  func loadUsers(from file: FileDescriptor,
+                 succces: @escaping OperationSuccess<[User]>,
                  failure: @escaping OperationFailure) {
-    let file = FileDescriptor(name: "users", type: "json")
     let operation = LocalFileOperation<[User]>(file: file, success: succces, failure: failure)
     operation.allowCompletionInBackground = false
     localFileQueue.addOperation(operation)

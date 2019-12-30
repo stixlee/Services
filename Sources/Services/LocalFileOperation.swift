@@ -14,9 +14,10 @@ public enum FileError: Error {
     case readError(String)
 }
 
-struct FileDescriptor {
-    let name: String
-    let type: String
+public struct FileDescriptor {
+  public let name: String
+  public let type: String
+  public let bundle: Bundle
 }
 class LocalFileOperation<T>: Operation where T:Codable {
 
@@ -111,13 +112,8 @@ class LocalFileOperation<T>: Operation where T:Codable {
 
         isExecuting = true
 
-      let resourceBundle = try? Bundle.myResourceBundle()
-
-        let bundle = Bundle(for: LocalFileOperation.self)
-        let frameworks = Bundle.allFrameworks
-
         do {
-            guard let fileURL = bundle.url(forResource: file.name, withExtension: file.type) else {
+          guard let fileURL = file.bundle.url(forResource: file.name, withExtension: file.type) else {
                 failureClosure(FileError.readError("Failed to Read from file"))
                 return
             }
@@ -146,16 +142,3 @@ class LocalFileOperation<T>: Operation where T:Codable {
         isFinished = true
     }
 }
-
-extension Bundle {
-    static func myResourceBundle() throws -> Bundle {
-        let bundles = Bundle.allBundles
-        let bundlePaths = bundles.compactMap { $0.resourceURL?.appendingPathComponent("MyAssetBundle", isDirectory: false).appendingPathExtension("bundle") }
-
-        guard let bundle = bundlePaths.compactMap({ Bundle(url: $0) }).first else {
-            throw NSError(domain: "com.myframework", code: 404, userInfo: [NSLocalizedDescriptionKey: "Missing resource bundle"])
-        }
-        return bundle
-    }
-}
-
