@@ -23,7 +23,7 @@ class LocalFileOperation<T>: Operation where T:Codable {
 
     var successClosure: OperationSuccess<T>
     var failureClosure: OperationFailure
-    var file: FileDescriptor
+    var url: URL
 
     var sessionTask: URLSessionTask?
 
@@ -93,9 +93,9 @@ class LocalFileOperation<T>: Operation where T:Codable {
 
     // MARK: - Initilization and lifecycle
     /// Default initialization method.
-    init(file: FileDescriptor, success: @escaping OperationSuccess<T>, failure: @escaping OperationFailure, allowBackgroundCompletion: Bool = false) {
+    init(url: URL, success: @escaping OperationSuccess<T>, failure: @escaping OperationFailure, allowBackgroundCompletion: Bool = false) {
 
-        self.file = file
+        self.url = url
         successClosure = success
         failureClosure = failure
         allowCompletionInBackground = allowBackgroundCompletion
@@ -113,11 +113,7 @@ class LocalFileOperation<T>: Operation where T:Codable {
         isExecuting = true
 
         do {
-          guard let fileURL = file.bundle.url(forResource: file.name, withExtension: file.type) else {
-                failureClosure(FileError.readError("Failed to Read from file"))
-                return
-            }
-            let data = try Data(contentsOf: fileURL, options: [])
+            let data = try Data(contentsOf: url, options: [])
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = JSONDecoder.DateDecodingStrategy.iso8601
             do {

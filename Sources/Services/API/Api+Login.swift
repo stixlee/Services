@@ -5,15 +5,17 @@
 //  Created by Michael Lee on 12/30/19.
 //
 
+import Foundation
+
 extension Api {
 
   open func login(username: String,
                   password: String,
-                  file: FileDescriptor,
+                  fileUrl: URL,
                   success: @escaping ((_ user: User?) -> Void),
                   failure: @escaping OperationFailure) {
 
-    loadUsers(from: file,
+    loadUsers(from url: URL,
       succces: { users in
         for user in users {
           if user.isMatch(for: username, password: password) {
@@ -26,10 +28,10 @@ extension Api {
       failure: failure)
   }
 
-  func loadUsers(from file: FileDescriptor,
+  func loadUsers(from url: URL,
                  succces: @escaping OperationSuccess<[User]>,
                  failure: @escaping OperationFailure) {
-    let operation = LocalFileOperation<[User]>(file: file, success: succces, failure: failure)
+    let operation = LocalFileOperation<[User]>(success: succces, failure: failure)
     operation.allowCompletionInBackground = false
     localFileQueue.addOperation(operation)
   }
