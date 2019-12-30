@@ -111,6 +111,8 @@ class LocalFileOperation<T>: Operation where T:Codable {
 
         isExecuting = true
 
+      let resourceBundle = try? Bundle.myResourceBundle()
+
         let bundle = Bundle(for: LocalFileOperation.self)
         let frameworks = Bundle.allFrameworks
 
@@ -144,3 +146,16 @@ class LocalFileOperation<T>: Operation where T:Codable {
         isFinished = true
     }
 }
+
+extension Bundle {
+    static func myResourceBundle() throws -> Bundle {
+        let bundles = Bundle.allBundles
+        let bundlePaths = bundles.compactMap { $0.resourceURL?.appendingPathComponent("MyAssetBundle", isDirectory: false).appendingPathExtension("bundle") }
+
+        guard let bundle = bundlePaths.compactMap({ Bundle(url: $0) }).first else {
+            throw NSError(domain: "com.myframework", code: 404, userInfo: [NSLocalizedDescriptionKey: "Missing resource bundle"])
+        }
+        return bundle
+    }
+}
+
