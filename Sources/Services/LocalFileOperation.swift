@@ -112,6 +112,7 @@ class LocalFileOperation<T>: Operation where T:Codable {
         isExecuting = true
 
         let bundle = Bundle(for: LocalFileOperation.self)
+        let frameworks = Bundle.allFrameworks
 
         do {
             guard let fileURL = bundle.url(forResource: file.name, withExtension: file.type) else {
