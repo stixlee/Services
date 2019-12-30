@@ -89,8 +89,8 @@
 		90F14C5023BA74F9007C2336 /* Local Files */ = {
 			isa = PBXGroup;
 			children = (
-				90F14C5123BA751F007C2336 /* LocalFileOperation.swift */,
 				90F14C5323BA7597007C2336 /* LocalFileQueue.swift */,
+				90F14C5123BA751F007C2336 /* LocalFileOperation.swift */,
 			);
 			name = "Local Files";
 			sourceTree = "<group>";

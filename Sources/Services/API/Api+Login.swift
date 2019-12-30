@@ -15,7 +15,7 @@ extension Api {
                   success: @escaping ((_ user: User?) -> Void),
                   failure: @escaping OperationFailure) {
 
-    loadUsers(from url: URL,
+    loadUsers(from: fileUrl,
       succces: { users in
         for user in users {
           if user.isMatch(for: username, password: password) {
@@ -31,7 +31,7 @@ extension Api {
   func loadUsers(from url: URL,
                  succces: @escaping OperationSuccess<[User]>,
                  failure: @escaping OperationFailure) {
-    let operation = LocalFileOperation<[User]>(success: succces, failure: failure)
+    let operation = LocalFileOperation<[User]>(url: url, success: succces, failure: failure)
     operation.allowCompletionInBackground = false
     localFileQueue.addOperation(operation)
   }
