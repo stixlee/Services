@@ -18,7 +18,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
       .package(url: "https://github.com/stixlee/Core.git",
-               .revision("dc854f76de535b89b966dbcae42ed30d4569d6f5"))
+               .revision("2a7f8929bc9e073e92f7bca5e548a154dac7b167"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
